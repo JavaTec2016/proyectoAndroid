@@ -176,4 +176,10 @@ public class Usuario extends ModeloBD {
     public static int[] obtenerRelevantes(){
         return new int[]{0};
     }
+    public static boolean[] especiales(){
+        return new boolean[]{true, true, true, true, true, true, true};
+    }
+    public static boolean[] numericos(){
+        return new boolean[]{true, true, true, true, true, true, true};
+    }
 }

@@ -53,15 +53,16 @@ public interface Extractor {
                 String enteros = ((EditText)inputs.get(i)[0]).getText().toString();
                 String decimal = ((Spinner)inputs.get(i)[1]).getSelectedItem().toString();
                 out[i] = Double.valueOf(enteros+"."+decimal);
-                if(enteros.length() < 1) out[i]=null;
+                if(out[i] != null && enteros.length() < 1) out[i]=null;
             }
             else if(campo.equalsIgnoreCase("editnumber")){
                 out[i] = extraerTexto(((EditText)input).getText().toString(), tipo);
-                if(out[i].toString().length() < 1) out[i]=null;
+                if(out[i] != null && out[i].toString().length() < 1) out[i]=null;
             }
             else if(campo.equalsIgnoreCase("edittext")){
-                out[i] = ((EditText)input).getText().toString();
-                if(out[i].toString().length() < 1) out[i]=null;
+
+                out[i] = extraerTexto(((EditText)input).getText().toString(), tipo);
+                if(out[i] != null && out[i].toString().length() < 1) out[i]=null;
             }
             else if(campo.equalsIgnoreCase("CheckBox")){
                 out[i] = ((CheckBox)input).isChecked() ? 1 : 0;
@@ -99,6 +100,7 @@ public interface Extractor {
             }
             else if(campo.equalsIgnoreCase("editnumber")){
                 out[i] = extraerTexto(((EditText)input).getText().toString(), tipo);
+                if(out[i] != null)
                 if(out[i].toString().length() < 1) {
                     out[i] = null;
                     if(stringsVacios) out[i] = "";
@@ -118,5 +120,12 @@ public interface Extractor {
             if(!input.isEnabled()) out[i] = null;
         }
         return out;
+    }
+    public static void limpiarDatos(ArrayList<View[]> v){
+        for (View[] views : v) {
+            for (View view : views) {
+                if(view instanceof EditText) ((EditText) view).setText("");
+            }
+        }
     }
 }

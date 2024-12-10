@@ -184,4 +184,13 @@ public class Farmacia_Contrato_Farmaceutica extends ModeloBD {
     public static int[] obtenerRelevantes(){
         return new int[]{0, 1, 2, 6};
     }
+    public static boolean[] especiales(){
+        return new boolean[]{false, false, false, true, true, false, false};
+    }
+    public static boolean[] numericos(){
+        return new boolean[]{true, false, false, true, true, true, true};
+    }
+    public static boolean[] letras(){
+        return new boolean[]{true, true, true, true, true, true, true};
+    }
 }

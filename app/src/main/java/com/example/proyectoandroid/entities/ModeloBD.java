@@ -218,6 +218,57 @@ public class ModeloBD {
         }
         return null;
     }
+    public static boolean[] especiales(){
+        return null;
+    }
+    public static boolean[] numericos(){
+        return null;
+    }
+    public static boolean[] letras(){
+        return null;
+    }
+    public static boolean[] especialesDe(String nombre){
+        switch (nombre.toLowerCase()){
+            case "farmaceutica": return Farmaceutica.especiales();
+            case "farmacia": return Farmacia.especiales();
+            case "farmacia_contrato_farmaceutica": return Farmacia_Contrato_Farmaceutica.especiales();
+            case "farmacia_inventario": return Farmacia_Inventario.especiales();
+            case "medicamento": return Medicamento.especiales();
+            case "medico": return Medico.especiales();
+            case "paciente": return Paciente.especiales();
+            case "recetas": return Recetas.especiales();
+            case "usuario": return Usuario.especiales();
+        }
+        return null;
+    }
+    public static boolean[] numericosDe(String nombre){
+        switch (nombre.toLowerCase()){
+            case "farmaceutica": return Farmaceutica.numericos();
+            case "farmacia": return Farmacia.numericos();
+            case "farmacia_contrato_farmaceutica": return Farmacia_Contrato_Farmaceutica.numericos();
+            case "farmacia_inventario": return Farmacia_Inventario.numericos();
+            case "medicamento": return Medicamento.numericos();
+            case "medico": return Medico.numericos();
+            case "paciente": return Paciente.numericos();
+            case "recetas": return Recetas.numericos();
+            case "usuario": return Usuario.numericos();
+        }
+        return null;
+    }
+    public static boolean[] letrasDe(String nombre){
+        switch (nombre.toLowerCase()){
+            case "farmaceutica": return Farmaceutica.letras();
+            case "farmacia": return Farmacia.numericos();
+            case "farmacia_contrato_farmaceutica": return Farmacia_Contrato_Farmaceutica.letras();
+            case "farmacia_inventario": return Farmacia_Inventario.letras();
+            case "medicamento": return Medicamento.letras();
+            case "medico": return Medico.letras();
+            case "paciente": return Paciente.letras();
+            case "recetas": return Recetas.letras();
+            case "usuario": return Usuario.letras();
+        }
+        return null;
+    }
     public static ModeloBD instanciar(Object[] args, String className){
 
         try {

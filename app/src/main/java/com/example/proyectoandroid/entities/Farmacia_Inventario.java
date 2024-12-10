@@ -127,4 +127,13 @@ public class Farmacia_Inventario extends ModeloBD {
     public static int[] obtenerRelevantes(){
         return new int[]{0, 2, 3};
     }
+    public static boolean[] especiales(){
+        return new boolean[]{false, false, false, false};
+    }
+    public static boolean[] numericos(){
+        return new boolean[]{false, true, false, true};
+    }
+    public static boolean[] letras(){
+        return new boolean[]{true, false, true, true};
+    }
 }

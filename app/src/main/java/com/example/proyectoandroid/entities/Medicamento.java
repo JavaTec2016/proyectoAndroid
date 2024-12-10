@@ -112,4 +112,13 @@ public class Medicamento  extends ModeloBD {
     public static int[] obtenerRelevantes(){
         return new int[]{0, 2};
     }
+    public static boolean[] especiales(){
+        return new boolean[]{false, true, false};
+    }
+    public static boolean[] numericos(){
+        return new boolean[]{false, true, false};
+    }
+    public static boolean[] letras(){
+        return new boolean[]{true, true, true};
+    }
 }

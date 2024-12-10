@@ -138,4 +138,11 @@ public class Medico extends ModeloBD {
     public static int[] obtenerRelevantes(){
         return new int[]{0, 1, 2, 3};
     }
+    public static boolean[] especiales(){
+
+        return new boolean[]{false, false, false, false, false};
+    }
+    public static boolean[] numericos(){
+        return new boolean[]{true, false, false, false, true};
+    }
 }

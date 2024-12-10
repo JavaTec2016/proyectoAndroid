@@ -165,5 +165,51 @@ public interface Componedor {
             }
         }
     }
-
+    public static boolean esEspecial(String in){
+        for(char c : in.toCharArray()){
+            if(!(Character.isAlphabetic(c) || Character.isDigit(c) || c == ' ') || c == '.'){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean esEspecialNoPunto(String in){
+        for(char c : in.toCharArray()){
+            if(!(Character.isAlphabetic(c) || Character.isDigit(c) || c == ' ')){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean decimalEspecial(String in, String tipo){
+        if(tipo.equalsIgnoreCase("decimal")){
+            return !(!esEspecialNoPunto(in) && unPunto(in));
+        }else return !esEspecial(in);
+    }
+    public static boolean unPunto(String in){
+        int coin = 0;
+        for(char c : in.toCharArray()){
+            if(c == '.'){
+                coin++;
+            }
+            if(coin > 1) return false;
+        }
+        return true;
+    }
+    public static boolean esNumerico(String in){
+        for(char c : in.toCharArray()){
+            if(Character.isDigit(c)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean esLetra(String in){
+        for(char c : in.toCharArray()){
+            if(!Character.isDigit(c)|| c == ' ' || c == '.'){
+                return true;
+            }
+        }
+        return false;
+    }
 }

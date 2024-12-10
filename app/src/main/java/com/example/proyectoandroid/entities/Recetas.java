@@ -181,4 +181,11 @@ public class Recetas extends ModeloBD {
     public static int[] obtenerRelevantes(){
         return new int[]{0,3, 4, 5, 6};
     }
+
+    public static boolean[] especiales(){
+        return new boolean[]{false, false, false, false, false, false, false};
+    }
+    public static boolean[] numericos(){
+        return new boolean[]{true, true, true, true, true, false, false};
+    }
 }

@@ -204,4 +204,10 @@ public class Paciente extends ModeloBD{
     public static int[] obtenerRelevantes(){
         return new int[]{0, 1, 2, 8};
     }
+    public static boolean[] especiales(){
+        return new boolean[]{false, false, false, false, true, false, false, true, false};
+    }
+    public static boolean[] numericos(){
+        return new boolean[]{true, false, false, false, false, true, true, true, true};
+    }
 }

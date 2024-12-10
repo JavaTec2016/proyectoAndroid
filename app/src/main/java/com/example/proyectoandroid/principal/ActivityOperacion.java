@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -173,7 +175,9 @@ public class ActivityOperacion extends Activity {
             case 0: ac = "Agregar "; break;
             case 1: ac = "Eliminar "; break;
             case 2: ac = "Modificar "; break;
-            case 3: ac = "Consultar "; break;
+            case 3:
+                ac = "Consultar ";
+            break;
             default:
                 Log.i("GENERADOR", "operacion invalida: " + op);
                 return;
@@ -406,6 +410,47 @@ public class ActivityOperacion extends Activity {
                 //y los desactiva
                 Componedor.habilitarInputs(false,
                         Componedor.filtrarInputs(ModeloBD.relevantesDe(tabla), inputs, true));
+
+                int[] relev = ModeloBD.relevantesDe(tabla);
+                for (int i = 0; i < relev.length; i++) {
+                    int posi = relev[i];
+                    View[] inps = inputs.get(posi);
+
+                    for (int i1 = 0; i1 < inps.length; i1++) {
+                        View campo = inps[i1];
+                        if(campo instanceof EditText){
+                            ((EditText) campo).addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                                }
+
+                                @Override
+                                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable s) {
+                                    Object[] datosF = Inspector.filtrarIndices(extraerDatos(true), ModeloBD.relevantesDe(tabla));
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            db.runInTransaction(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    List results = db.generalDAO().filtrarDaoArray(tabla, db, datosF);
+                                                    configurarRecycler(results, labels);
+                                                }
+                                            });
+                                        }
+                                    }).start();
+                                }
+                            });
+                        }
+                    }
+                }
+
                 break;
 
         }
@@ -507,8 +552,14 @@ public class ActivityOperacion extends Activity {
                                                 }
                                             });
                                         }catch (SQLiteConstraintException e){
-                                            toastError(db.getSQLError(e.getMessage()));
-                                            Log.i("ERROR", e.getMessage());
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    toastError(db.getSQLError(e.getMessage()));
+                                                    Log.i("ERROR", e.getMessage());
+                                                }
+                                            });
+
                                         }
 
                                     }
@@ -593,6 +644,9 @@ public class ActivityOperacion extends Activity {
                 Toast.makeText(this, "Codigo " + e, Toast.LENGTH_SHORT).show();
         }
     }
+    public void Limpia(View v){
+        Extractor.limpiarDatos(inputs);
+    }
     public Object[] extraerDatos(){
         int i = 0;
         for(View[] vs : inputs){
@@ -630,6 +684,8 @@ public class ActivityOperacion extends Activity {
     }
     public int validar(Object[] datos){
         String[] tiposSQL = ModeloBD.obtenerTiposSQL(tabla);
+        boolean[] numericos =  ModeloBD.numericosDe(tabla);
+        boolean[] especiales =  ModeloBD.especialesDe(tabla);
         Log.i("VALIDA", Arrays.toString(longitudes));
         for(int i = 0; i < datos.length; i++){
             Object dato = datos[i];
@@ -637,6 +693,8 @@ public class ActivityOperacion extends Activity {
             String label = labels[i];
             boolean nonulo = obligatorios[i];
             int longitud = longitudes[i];
+            boolean especial = especiales[i];
+            boolean numerico = numericos[i];
 
             if(dato == null){
                 if((nonulo || esPrimario(i))){//checkboxes??
@@ -649,6 +707,13 @@ public class ActivityOperacion extends Activity {
             } else if (longitud > 0 && dato.toString().length() > longitud) {
                 Toast.makeText(this, "Longitud '"+label+"' ("+dato.toString().length()+") excede "+ longitud + " caracteres", Toast.LENGTH_LONG).show();
                 return 3;
+            }else if(Componedor.esEspecial(dato.toString()) && !especial){
+                Toast.makeText(this, "'"+label+"' no admite caracteres especiales", Toast.LENGTH_LONG).show();
+                return 4;
+            }else if(Componedor.esNumerico(dato.toString()) && !numerico){
+                Log.i("VALIDA", Arrays.toString(numericos) + " ("+tabla+") , " + Arrays.toString(datos) + " , " +i);
+                Toast.makeText(this, "'"+label+"' no admite caracteres numericos", Toast.LENGTH_LONG).show();
+                return 5;
             }
 
         }
